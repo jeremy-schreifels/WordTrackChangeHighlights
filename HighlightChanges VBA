@@ -1,0 +1,29 @@
+Sub HighlightChanges()
+'  
+' Highlight all deletions with grey highlight and all additions with yellow highlight
+'  
+
+' Get current state of tracking changes -- on or off
+tempState = ActiveDocument.TrackRevisions
+Application.ScreenUpdating = False
+
+' Turn off track changes
+ActiveDocument.TrackRevisions = False
+    
+' Loop through changes
+For Each Revision In ActiveDocument.Revisions
+    If Revision.Type = wdRevisionDelete Then
+        ' Highlight deletions
+        Set myRange = Revision.Range
+        myRange.HighlightColorIndex = wdGray25
+    ElseIf Revision.Type = wdRevisionInsert Then
+        ' Highlight additions
+        Set myRange = Revision.Range
+        myRange.HighlightColorIndex = wdYellow
+    End If
+Next
+    
+Application.ScreenUpdating = True
+ActiveDocument.TrackRevisions = tempState
+
+End Sub
